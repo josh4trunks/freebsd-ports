@@ -1,53 +1,44 @@
 #!/bin/sh
+# $FreeBSD$
 #
-# PROVIDE: %%PORTNAME%%
+# PROVIDE: sickrage
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
 #
 # Add the following lines to /etc/rc.conf.local or /etc/rc.conf
 # to enable this service:
 #
-# %%PORTNAME%%_enable (bool):	Set to NO by default.
-#			Set it to YES to enable it.
-# %%PORTNAME%%_user:	The user account %%PORTNAME%% daemon runs as what
-#			you want it to be. It uses '%%USERS%%' user by
-#			default. Do not sets it as empty or it will run
-#			as root.
-# %%PORTNAME%%_group:	The group account %%PORTNAME%% daemon runs as what
-#			you want it to be. It uses '%%GROUPS%%' group by
-#			default. Do not sets it as empty or it will run
-#			as wheel.
-# %%PORTNAME%%_data_dir:	Directory where %%PORTNAME%% configuration
-#			data is stored.
-#			Default: /var/db/%%PORTNAME%%
+# sickrage_enable:	Set to NO by default. Set it to YES to enable it.
+# sickrage_user:	The user account SickRage daemon runs as what
+#			you want it to be.
+# sickrage_datadir:	Directory where SickRage user data lives.
+#			    Default: /var/db/sickrage
 
 . /etc/rc.subr
-name="%%PORTNAME%%"
-rcvar="${name}_enable"
+
+name="sickrage"
+rcvar="sickrage_enable"
+
 load_rc_config ${name}
 
-: ${%%PORTNAME%%_enable:="NO"}
-: ${%%PORTNAME%%_user:="%%USERS%%"}
-: ${%%PORTNAME%%_group:="%%GROUPS%%"}
-: ${%%PORTNAME%%_data_dir:="/var/db/%%PORTNAME%%"}
+: ${sickrage_enable:="NO"}
+: ${sickrage_user:="%%USERS%%"}
+: ${sickrage_datadir:="/var/db/sickrage"}
 
-pidfile="/var/run/%%PORTNAME%%/%%PORTNAME%%.pid"
+pidfile="/var/run/sickrage/sickrage.pid"
 command="%%PYTHON_CMD%%"
-command_args="%%DATADIR%%/SickRage/SickBeard.py --datadir ${sickrage_data_dir} --daemon --pidfile ${pidfile} --nolaunch"
+command_args="%%DATADIR%%/SickBeard.py --daemon --datadir ${sickrage_datadir} --pidfile ${pidfile} --nolaunch"
 
-start_precmd="%%PORTNAME%%_prestart"
-%%PORTNAME%%_prestart() {
-	export LC_CTYPE="UTF-8"
+start_precmd="sickrage_prestart"
 
-	if [ -f ${pidfile} ]; then
-		rm -f ${pidfile}
-		echo "Removing stale pidfile."
-	elif [ ! -d ${pidfile%/*} ]; then
-		install -d -o $%%PORTNAME%%_user -g $%%PORTNAME%%_group ${pidfile%/*}
+sickrage_prestart()
+{
+	export LC_CTYPE="UTF-8.en_US"
+	if [ ! -d ${sickrage_datadir} ]; then
+		install -d -o ${sickrage_user} ${sickrage_datadir}
 	fi
-
-	if [ ! -d ${%%PORTNAME%%_data_dir} ]; then
-		install -d -o ${%%PORTNAME%%_user} -g ${%%PORTNAME%%_group} ${%%PORTNAME%%_data_dir}
+	if [ ! -d ${pidfile%/*} ]; then
+		install -d -o ${sickrage_user} ${pidfile%/*}
 	fi
 }
 
