@@ -1,0 +1,44 @@
+# $FreeBSD$
+
+PORTNAME=	headphones
+PORTVERSION=	9.3.1
+CATEGORIES=	multimedia
+
+MAINTAINER=	joshruehlig@gmail.com
+COMMENT=	Automatic music downloader for SABnzbd
+
+LICENSE=	GPLv3
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
+
+USES=	python:2.5-2.7
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	rembo10
+GH_PROJECT=	headphones
+GH_COMMIT=	c5dd1a9
+GH_TAGNAME=	${GH_COMMIT}
+
+NO_BUILD=	yes
+PLIST_SUB=	PORTNAME=${PORTNAME} USERS=${USERS} GROUPS=${GROUPS}
+SUB_LIST=	PORTNAME=${PORTNAME} USERS=${USERS} GROUPS=${GROUPS} PYTHON_CMD=${PYTHON_CMD}
+SUB_FILES=	pkg-message
+USE_RC_SUBR=	${PORTNAME}
+
+USERS=		media
+GROUPS=		${USERS}
+
+OPTIONS_DEFINE=	OPENSSL TRANSCODING
+TRANSCODING_DESC=	Transcoding with FFmpeg
+OPTIONS_DEFAULT=	OPENSSL TRANSCODING
+
+OPENSSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>0:${PORTSDIR}/security/py-openssl
+TRANSCODING_RUN_DEPENDS=	ffmpeg:${PORTSDIR}/multimedia/ffmpeg
+
+.include <bsd.port.pre.mk>
+
+do-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}/${GH_PROJECT}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/${GH_PROJECT}
+
+.include <bsd.port.post.mk>
