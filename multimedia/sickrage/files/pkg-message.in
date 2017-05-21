@@ -1,6 +1,6 @@
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-multimedia/sickrage includes an RC script:
+multimedia/%%PORTNAME%% includes an RC script:
 %%PREFIX%%/etc/rc.d/sickrage
 
 TO START ON BOOT:
