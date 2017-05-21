@@ -1,5 +1,4 @@
 #!/bin/sh
-# $FreeBSD$
 #
 # PROVIDE: sickrage
 # REQUIRE: LOGIN
@@ -9,16 +8,14 @@
 # to enable this service:
 #
 # sickrage_enable:	Set to NO by default. Set it to YES to enable it.
-# sickrage_user:	The user account SickRage daemon runs as what
-#			you want it to be.
+# sickrage_user:	The user account the SickRage daemon runs as.
+#			It uses '%%USERS%%' by default.
 # sickrage_datadir:	Directory where SickRage user data lives.
-#			    Default: /var/db/sickrage
+#			Default: /var/db/sickrage
 
 . /etc/rc.subr
-
 name="sickrage"
-rcvar="sickrage_enable"
-
+rcvar="${name}_enable"
 load_rc_config ${name}
 
 : ${sickrage_enable:="NO"}
@@ -30,15 +27,14 @@ command="%%PYTHON_CMD%%"
 command_args="%%DATADIR%%/SickBeard.py --daemon --datadir ${sickrage_datadir} --pidfile ${pidfile} --nolaunch"
 
 start_precmd="sickrage_prestart"
-
 sickrage_prestart()
 {
 	export LC_CTYPE="UTF-8.en_US"
-	if [ ! -d ${sickrage_datadir} ]; then
-		install -d -o ${sickrage_user} ${sickrage_datadir}
-	fi
 	if [ ! -d ${pidfile%/*} ]; then
 		install -d -o ${sickrage_user} ${pidfile%/*}
+	fi
+	if [ ! -d ${sickrage_datadir} ]; then
+		install -d -o ${sickrage_user} ${sickrage_datadir}
 	fi
 }
 
