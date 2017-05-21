@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sickrage
-PORTVERSION=	20170414
-PORTREVISION=	0
+PORTVERSION=	20170521
 CATEGORIES=	multimedia
 
 MAINTAINER=	joshruehlig@gmail.com
@@ -14,23 +13,23 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml
 #		${PYTHON_PKGNAMEPREFIX}imaging>0:graphics/py-pillow
 
-USE_RC_SUBR=	sickrage
-SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} USERS=${USERS}
+USE_GITHUB=	yes
+GH_ACCOUNT=	SickRage
+GH_PROJECT=	SickRage
+GH_TAGNAME=	v2017.05.21-1
+
+USES=		python:2.7
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-
-USES=           python:2.7
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} USERS=${USERS}
+USE_RC_SUBR=	sickrage
 
 USERS=		_sabnzbd
 GROUPS=		_sabnzbd
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     SickRage
-GH_PROJECT=     SickRage
-GH_TAGNAME=     v2017.04.14-1
-
 OPTIONS_DEFINE=	OPENSSL UNRAR
+
 OPENSSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl
 UNRAR_RUN_DEPENDS=	unrar:archivers/unrar
 
