@@ -23,6 +23,7 @@ USES=		python:2.7
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} USERS=${USERS}
+SUB_FILES=	pkg-message
 USE_RC_SUBR=	sickrage
 
 USERS=		_sabnzbd
