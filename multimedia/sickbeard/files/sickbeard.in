@@ -8,7 +8,7 @@
 # to enable this service:
 #
 # sickbeard_enable:	Set to NO by default. Set it to YES to enable it.
-# sickbeard_user:	The user account SickBeard daemon runs as.
+# sickbeard_user:	The user account the SickBeard daemon runs as.
 #			It uses '%%USERS%%' by default.
 # sickbeard_datadir:	Directory where SickBeard user data is stored.
 #			Default: /var/db/sickbeard
